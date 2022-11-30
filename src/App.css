@@ -1,6 +1,13 @@
+* {
+  box-sizing: border-box;
+margin: 0.3rem;}
+
+
 .App {
   text-align: center;
 }
+
+
 
 .App-logo {
   height: 40vmin;
@@ -11,6 +18,15 @@
   .App-logo {
     animation: App-logo-spin infinite 20s linear;
   }
+}
+
+button{
+  width: 14rem;
+}
+
+.botones{
+  gap: 1rem;
+margin: 3rem;
 }
 
 .App-header {
