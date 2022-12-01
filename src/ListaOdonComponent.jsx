@@ -1,24 +1,23 @@
 import React, { Component } from 'react';
-import OService from './OService';
+import { useEffect, useState } from 'react';
+import axios from 'axios';
 
-class ListaOdonComponent extends Component {
-    debugger
-    constructor() {
-        super();
-        this.state = {
-            odontologos: []
-        }
-    }
 
-    componentDidMount() {
-        OService.getOdontologos().then((res) => {
-            this.setState({ odontologos: res.data });
-        }
-        );
-    }
+const ListaOdonComponent = () => {
 
-    render() {
-        return (
+    const [odontologos, setOdontologos]= useState([])
+
+    useEffect(() => {
+      listarOdontologos();
+    },[]);
+    
+    const listarOdontologos=async()=>{
+const result=await axios.get("http://localhost:8080/odontologos");
+setOdontologos(result.data);
+    };
+
+  return (
+
             <div>
                 <h2 className="text-center">  </h2>
                 <div className="row">
@@ -29,32 +28,31 @@ class ListaOdonComponent extends Component {
                                 <th>Nombre</th>
                                 <th>Apellido</th>
                                 <th>Matrícula</th>
+                                <th>Acción</th>
                             </tr>
                         </tbody>
                         <tbody>
                         
-                            {
-                                this.state.odontologos.map(
-                                    odontologos =>
+                            {odontologos.map(odontologos =>
                                         <tr key={odontologos.id}>
                                             <td> {odontologos.id} </td>
                                             <td> {odontologos.nombre} </td>
                                             <td> {odontologos.apellido} </td>
                                             <td> {odontologos.matricula} </td>
+                                            <td> 
+                    <button type="button" class="btn btn-primary btn-lg">Editar </button>
+                    <button type="button" class="btn btn-danger btn-lg">Eliminar </button>  </td>
                                         </tr>
-                                )
-                            }
+                                )}
                         </tbody>
                     </table>
                     <div>
-                    <button type="button" class="btn btn-success btn-lg">Agregar Odontologo</button>
-                    <button type="button" class="btn btn-danger btn-lg">Eliminar Odontologo</button>
-                    <button type="button" class="btn btn-primary btn-lg">Editar Odontologo</button>
+                    
                     </div>
                 </div>
             </div>
         );
     }
-}
 
-export default ListaOdonComponent;
+
+export default ListaOdonComponent
