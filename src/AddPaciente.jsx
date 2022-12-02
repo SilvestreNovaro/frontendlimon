@@ -1,44 +1,35 @@
 import axios from "axios";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-export default function AddUser() {
+export default function AddPaciente() {
 	let navigate = useNavigate();
 
-	/* const { id } = useParams(); */
-
-	const [user, setUser] = useState({
+	const [paciente, setPaciente] = useState({
 		nombre: "",
 		apellido: "",
-		matricula: "",
+		domicilio:"",
+        dni:"",
+        // fechaAlta:{}
 	});
 
-	const { nombre, apellido, matricula } = user;
+	const { nombre, apellido, domicilio, dni, fechaAlta } = paciente;
 
 	const onInputChange = (e) => {
-		setUser({ ...user, [e.target.name]: e.target.value });
+		setPaciente({ ...paciente, [e.target.name]: e.target.value });
 	};
-
-	useEffect(() => {
-		loadUser();
-	}, []);
 
 	const onSubmit = async (e) => {
 		e.preventDefault();
-		await axios.put("http://localhost:8080/modificarOdontologo", user);
-		navigate("/odontologos");
-	};
-
-	const loadUser = async () => {
-		const result = await axios.get("http://localhost:8080/modificarOdontologo");
-		setUser(result.data);
+		await axios.post("http://localhost:8080/nuevosPacientes", paciente);
+		navigate("/pacientes");
 	};
 
 	return (
 		<div className="container">
 			<div className="row">
 				<div className="col-md-6 offset-md-3 border rounded p-4 mt-2 shadow">
-					<h2 className="text-center m-4">Editar Odontologo</h2>
+					<h2 className="text-center m-4">Registrar Paciente</h2>
 
 					<form onSubmit={(e) => onSubmit(e)}>
 						<div className="mb-3">
@@ -70,18 +61,45 @@ export default function AddUser() {
 						</div>
 
 						<div className="mb-3">
-							<label htmlFor="Email" className="form-label">
-								Matricula{" "}
+							<label htmlFor="Domicilio" className="form-label">
+								Domicilio{" "}
 							</label>
 							<input
 								type={"text"}
 								className="form-control"
-								placeholder="Enter your e-mail address"
-								name="matricula"
-								value={matricula}
+								placeholder="Ingrese su domicilio"
+								name="domicilio"
+								value={domicilio}
 								onChange={(e) => onInputChange(e)}
 							/>
 						</div>
+                        <div className="mb-3">
+							<label htmlFor="DniPaciente" className="form-label">
+								DNI
+							</label>
+							<input 
+								type={"text"}
+								className="form-control"
+								placeholder="Ingrese su DNI "
+								name="dni"
+								value={dni}
+								onChange={(e) => onInputChange(e)}
+							/>
+						</div>
+
+                        {/* <div className="mb-3">
+							<label htmlFor="Fecha" className="form-label">
+								Fecha de alta
+							</label>
+							<input
+								type={"date"}
+								className="form-control"
+								placeholder="Ingrese su Fecha de alta"
+								name="Fecha"
+								value={fechaAlta}
+								onChange={(e) => onInputChange(e)}
+							/>
+						</div> */}
 						<button type="submit" className="btn btn-outline-primary">
 							Submit
 						</button>
